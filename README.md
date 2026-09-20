@@ -1,2 +1,3 @@
-# algO
-En este proyecto vamos a crear una aplicacion para comparar algoritmos de forma visual 
+algO es una aplicación web interactiva desarrollada para la visualización, análisis y comparación en tiempo real de algoritmos de ordenamiento. La plataforma permite observar de manera gráfica el comportamiento interno de diferentes estructuras algorítmicas (como Bubble Sort, Quick Sort, Merge Sort, entre otros) mediante representaciones de barras dinámicas, facilitando la comprensión de su complejidad temporal y espacial.
+
+El sistema incorpora un módulo de ejecución en paralelo para medir y contrastar métricas clave de rendimiento —tales como el número de comparaciones, intercambios (swaps) y el tiempo de ejecución en milisegundos— bajo idénticas condiciones de prueba, ofreciendo una interfaz moderna, responsiva y orientada a la optimización de procesos de aprendizaje técnico.
