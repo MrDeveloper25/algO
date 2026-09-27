@@ -205,3 +205,112 @@ export function oddEvenSort(arr: number[]): AlgorithmResult {
   }
   return { algorithmName: "Odd-Even Sort", sortedArray: arrayCopy, history, executionTimeMs: performance.now() - startTime, comparisons, swaps };
 }
+
+// ==========================================
+// TAREA 2.2: ALGORITMOS AVANZADOS
+// ==========================================
+
+export function quickSort(arr: number[]): AlgorithmResult {
+  const history: StepRecord[] = [];
+  let comparisons = 0, swaps = 0;
+  const startTime = performance.now();
+  let arrayCopy = [...arr];
+
+  function partition(low: number, high: number): number {
+    let pivot = arrayCopy[high];
+    let i = low - 1;
+
+    for (let j = low; j < high; j++) {
+      comparisons++;
+      history.push({ currentArray: [...arrayCopy], comparingIndices: [j, high], swapped: false });
+
+      if (arrayCopy[j] < pivot) {
+        i++;
+        let temp = arrayCopy[i];
+        arrayCopy[i] = arrayCopy[j];
+        arrayCopy[j] = temp;
+        swaps++;
+        history.push({ currentArray: [...arrayCopy], comparingIndices: [i, j], swapped: true });
+      }
+    }
+    let temp = arrayCopy[i + 1];
+    arrayCopy[i + 1] = arrayCopy[high];
+    arrayCopy[high] = temp;
+    swaps++;
+    history.push({ currentArray: [...arrayCopy], comparingIndices: [i + 1, high], swapped: true });
+    return i + 1;
+  }
+
+  function quickSortRecursive(low: number, high: number) {
+    if (low < high) {
+      let pi = partition(low, high);
+      quickSortRecursive(low, pi - 1);
+      quickSortRecursive(pi + 1, high);
+    }
+  }
+
+  quickSortRecursive(0, arrayCopy.length - 1);
+  return { algorithmName: "Quick Sort", sortedArray: arrayCopy, history, executionTimeMs: performance.now() - startTime, comparisons, swaps };
+}
+
+export function mergeSort(arr: number[]): AlgorithmResult {
+  const history: StepRecord[] = [];
+  let comparisons = 0, swaps = 0; 
+  const startTime = performance.now();
+  let arrayCopy = [...arr];
+
+  function merge(left: number, mid: number, right: number) {
+    let n1 = mid - left + 1;
+    let n2 = right - mid;
+    let L = new Array(n1);
+    let R = new Array(n2);
+
+    for (let i = 0; i < n1; i++) L[i] = arrayCopy[left + i];
+    for (let j = 0; j < n2; j++) R[j] = arrayCopy[mid + 1 + j];
+
+    let i = 0, j = 0, k = left;
+
+    while (i < n1 && j < n2) {
+      comparisons++;
+      history.push({ currentArray: [...arrayCopy], comparingIndices: [left + i, mid + 1 + j], swapped: false });
+      
+      if (L[i] <= R[j]) {
+        arrayCopy[k] = L[i];
+        i++;
+      } else {
+        arrayCopy[k] = R[j];
+        j++;
+      }
+      swaps++; 
+      history.push({ currentArray: [...arrayCopy], comparingIndices: [k, k], swapped: true });
+      k++;
+    }
+
+    while (i < n1) {
+      arrayCopy[k] = L[i];
+      swaps++;
+      history.push({ currentArray: [...arrayCopy], comparingIndices: [k, k], swapped: true });
+      i++;
+      k++;
+    }
+
+    while (j < n2) {
+      arrayCopy[k] = R[j];
+      swaps++;
+      history.push({ currentArray: [...arrayCopy], comparingIndices: [k, k], swapped: true });
+      j++;
+      k++;
+    }
+  }
+
+  function mergeSortRecursive(left: number, right: number) {
+    if (left >= right) return;
+    let mid = left + Math.floor((right - left) / 2);
+    mergeSortRecursive(left, mid);
+    mergeSortRecursive(mid + 1, right);
+    merge(left, mid, right);
+  }
+
+  mergeSortRecursive(0, arrayCopy.length - 1);
+  return { algorithmName: "Merge Sort", sortedArray: arrayCopy, history, executionTimeMs: performance.now() - startTime, comparisons, swaps };
+}
