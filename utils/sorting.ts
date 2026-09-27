@@ -19,7 +19,7 @@ export interface AlgorithmResult {
 }
 
 // ==========================================
-// TAREA 2.1: LOS 6 ALGORITMOS DE FUERZA BRUTA
+// ALGORITMOS DE FUERZA BRUTA (5)
 // ==========================================
 
 export function bubbleSort(arr: number[]): AlgorithmResult {
@@ -98,49 +98,6 @@ export function insertionSort(arr: number[]): AlgorithmResult {
   return { algorithmName: "Insertion Sort", sortedArray: arrayCopy, history, executionTimeMs: performance.now() - startTime, comparisons, swaps };
 }
 
-export function cocktailSort(arr: number[]): AlgorithmResult {
-  const history: StepRecord[] = [];
-  let comparisons = 0, swaps = 0;
-  const startTime = performance.now();
-  let arrayCopy = [...arr];
-  let swapped = true;
-  let start = 0;
-  let end = arrayCopy.length - 1;
-
-  while (swapped) {
-    swapped = false;
-    for (let i = start; i < end; ++i) {
-      comparisons++;
-      history.push({ currentArray: [...arrayCopy], comparingIndices: [i, i + 1], swapped: false });
-      if (arrayCopy[i] > arrayCopy[i + 1]) {
-        let temp = arrayCopy[i];
-        arrayCopy[i] = arrayCopy[i + 1];
-        arrayCopy[i + 1] = temp;
-        swaps++;
-        history.push({ currentArray: [...arrayCopy], comparingIndices: [i, i + 1], swapped: true });
-        swapped = true;
-      }
-    }
-    if (!swapped) break;
-    swapped = false;
-    end = end - 1;
-    for (let i = end - 1; i >= start; --i) {
-      comparisons++;
-      history.push({ currentArray: [...arrayCopy], comparingIndices: [i, i + 1], swapped: false });
-      if (arrayCopy[i] > arrayCopy[i + 1]) {
-        let temp = arrayCopy[i];
-        arrayCopy[i] = arrayCopy[i + 1];
-        arrayCopy[i + 1] = temp;
-        swaps++;
-        history.push({ currentArray: [...arrayCopy], comparingIndices: [i, i + 1], swapped: true });
-        swapped = true;
-      }
-    }
-    start = start + 1;
-  }
-  return { algorithmName: "Cocktail Sort", sortedArray: arrayCopy, history, executionTimeMs: performance.now() - startTime, comparisons, swaps };
-}
-
 export function gnomeSort(arr: number[]): AlgorithmResult {
   const history: StepRecord[] = [];
   let comparisons = 0, swaps = 0;
@@ -168,46 +125,32 @@ export function gnomeSort(arr: number[]): AlgorithmResult {
   return { algorithmName: "Gnome Sort", sortedArray: arrayCopy, history, executionTimeMs: performance.now() - startTime, comparisons, swaps };
 }
 
-export function oddEvenSort(arr: number[]): AlgorithmResult {
+export function exchangeSort(arr: number[]): AlgorithmResult {
   const history: StepRecord[] = [];
   let comparisons = 0, swaps = 0;
   const startTime = performance.now();
   let arrayCopy = [...arr];
-  let isSorted = false;
   let n = arrayCopy.length;
 
-  while (!isSorted) {
-    isSorted = true;
-    for (let i = 1; i <= n - 2; i = i + 2) {
+  for (let i = 0; i < n - 1; i++) {
+    for (let j = i + 1; j < n; j++) {
       comparisons++;
-      history.push({ currentArray: [...arrayCopy], comparingIndices: [i, i + 1], swapped: false });
-      if (arrayCopy[i] > arrayCopy[i + 1]) {
+      history.push({ currentArray: [...arrayCopy], comparingIndices: [i, j], swapped: false });
+
+      if (arrayCopy[i] > arrayCopy[j]) {
         let temp = arrayCopy[i];
-        arrayCopy[i] = arrayCopy[i + 1];
-        arrayCopy[i + 1] = temp;
+        arrayCopy[i] = arrayCopy[j];
+        arrayCopy[j] = temp;
         swaps++;
-        history.push({ currentArray: [...arrayCopy], comparingIndices: [i, i + 1], swapped: true });
-        isSorted = false;
-      }
-    }
-    for (let i = 0; i <= n - 2; i = i + 2) {
-      comparisons++;
-      history.push({ currentArray: [...arrayCopy], comparingIndices: [i, i + 1], swapped: false });
-      if (arrayCopy[i] > arrayCopy[i + 1]) {
-        let temp = arrayCopy[i];
-        arrayCopy[i] = arrayCopy[i + 1];
-        arrayCopy[i + 1] = temp;
-        swaps++;
-        history.push({ currentArray: [...arrayCopy], comparingIndices: [i, i + 1], swapped: true });
-        isSorted = false;
+        history.push({ currentArray: [...arrayCopy], comparingIndices: [i, j], swapped: true });
       }
     }
   }
-  return { algorithmName: "Odd-Even Sort", sortedArray: arrayCopy, history, executionTimeMs: performance.now() - startTime, comparisons, swaps };
+  return { algorithmName: "Exchange Sort", sortedArray: arrayCopy, history, executionTimeMs: performance.now() - startTime, comparisons, swaps };
 }
 
 // ==========================================
-// TAREA 2.2: ALGORITMOS AVANZADOS
+// ALGORITMOS DIVIDE Y VENCERÁS (2)
 // ==========================================
 
 export function quickSort(arr: number[]): AlgorithmResult {
