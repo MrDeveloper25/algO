@@ -8,19 +8,28 @@ export default function Header() {
         </div>
         
         <div className="flex flex-wrap items-center gap-4">
-          {/* Configuración: Algoritmo */}
+          {/* Selector con los 7 algoritmos exactos */}
           <select className="bg-gray-800 text-gray-200 border border-gray-700 p-2 rounded focus:outline-none focus:border-cyan-500 transition-colors">
             <option value="bubble">Bubble Sort</option>
+            <option value="selection">Selection Sort</option>
+            <option value="insertion">Insertion Sort</option>
+            <option value="gnome">Gnome Sort</option>
+            <option value="exchange">Exchange Sort</option>
             <option value="quick">Quick Sort</option>
             <option value="merge">Merge Sort</option>
           </select>
 
-          {/* Configuración: Tamaño de dataset (NUEVO) */}
-          <select className="bg-gray-800 text-gray-200 border border-gray-700 p-2 rounded focus:outline-none focus:border-cyan-500 transition-colors">
-            <option value="10">10 elementos</option>
-            <option value="50">50 elementos</option>
-            <option value="100">100 elementos</option>
-          </select>
+          {/* Input numérico para tamaño de dataset personalizado */}
+          <div className="flex items-center gap-2 bg-gray-800 border border-gray-700 px-3 py-1.5 rounded">
+            <span className="text-xs text-gray-400">Elementos:</span>
+            <input 
+              type="number" 
+              defaultValue={50} 
+              min={5} 
+              max={500} 
+              className="w-16 bg-transparent text-gray-200 focus:outline-none text-center font-mono"
+            />
+          </div>
 
           <button className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded font-medium transition-colors">
             Generar Arreglo
