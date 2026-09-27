@@ -9,7 +9,7 @@ export default function Home() {
           Visualizador y Benchmark Web de Algoritmos de Ordenamiento.
         </p>
         <div className="inline-block bg-slate-900 border border-slate-800 rounded-lg p-4 text-left text-sm text-emerald-400 font-mono">
-          Status: Despliegue activo y funcionando en Vercel 🚀
+          Status: Despliegue activo y funcionando en Vercel 
         </div>
       </div>
     </main>
