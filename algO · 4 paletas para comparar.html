@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="cobre"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>algO · Temas</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--r:12px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+[data-theme=cobre]{--bg:#0D0E10;--card:#15171A;--card2:#1B1E22;--line:#2A2D33;--ink:#EDEAE4;--mute:#8E9096;--acc:#D9814A;--onacc:#1A0F07;--bar:#4B5057;--cmp:#E8C468;--swp:#D9574A;--ok:#4FB3A6;--piv:#fff;--stage:#111316}
+[data-theme=indigo]{--bg:#0C1021;--card:#121733;--card2:#1A2042;--line:#283059;--ink:#E8EBFA;--mute:#8F98C4;--acc:#9AA8FF;--onacc:#0C1021;--bar:#3A4680;--cmp:#F2C86B;--swp:#FF7A90;--ok:#6FE0C0;--piv:#fff;--stage:#0F1430}
+[data-theme=porcelana]{--bg:#F6F7F9;--card:#fff;--card2:#F0F2F5;--line:#DDE1E8;--ink:#0F172A;--mute:#5F6B7F;--acc:#0F766E;--onacc:#fff;--bar:#B8C0CE;--cmp:#F0B429;--swp:#E5484D;--ok:#0F9F6E;--piv:#0F172A;--stage:#fff}
+[data-theme=bosque]{--bg:#0B1210;--card:#111B18;--card2:#17241F;--line:#243530;--ink:#E7EFEA;--mute:#8AA097;--acc:#B7E36A;--onacc:#0B1210;--bar:#3C5A50;--cmp:#F2D06B;--swp:#F07A6A;--ok:#5FD3A2;--piv:#fff;--stage:#0E1714}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Manrope,system-ui,sans-serif;transition:background .2s}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1160px;margin:auto;padding:16px clamp(14px,3vw,32px) 48px}
+.themes{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 0 16px;font-size:13px;color:var(--mute)}
+.themes button{font:600 13px Manrope;cursor:pointer;padding:7px 12px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--ink);display:flex;gap:8px;align-items:center}
+.themes button[aria-pressed=true]{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc)}
+.themes i{width:12px;height:12px;border-radius:50%;background:var(--sw)}
+.top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}
+.logo{font-weight:800;font-size:26px;letter-spacing:-.04em}.logo span{color:var(--acc)}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+select,.pill{background:var(--card2);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 12px;font:500 14px Manrope}
+.pill{display:flex;gap:8px;align-items:center;color:var(--mute)}.pill input{accent-color:var(--acc);width:90px}
+.btn{font:600 14px Manrope;cursor:pointer;padding:10px 16px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.btn:hover{background:var(--card2)}
+.btn.p{background:var(--acc);border-color:var(--acc);color:var(--onacc);padding:10px 22px}.btn.p:hover{filter:brightness(1.08)}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.stage{margin-top:20px;background:var(--stage);border:1px solid var(--line);border-radius:16px;padding:22px 22px 18px;position:relative}
+#bars{height:340px;display:flex;align-items:flex-end;gap:2px;background:repeating-linear-gradient(to top,transparent 0 84px,color-mix(in srgb,var(--line) 55%,transparent) 84px 85px)}
+#bars div{flex:1;background:var(--bar);border-radius:2px 2px 0 0}
+#bars .c{background:var(--cmp)}#bars .s{background:var(--swp)}#bars .o{background:var(--ok)}#bars .p{background:var(--piv)}
+.leg{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--mute);margin-top:14px}
+.leg span:before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;background:var(--c)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);margin:18px 0 8px}
+.stats div{padding:6px 0 6px 20px;border-left:1px solid var(--line)}.stats div:first-child{border:0;padding-left:0}
+.stats span{font-size:13px;color:var(--mute)}.stats b{display:block;font:500 clamp(22px,3.4vw,34px)/1.2 'JetBrains Mono',monospace}
+h2{font-size:26px;letter-spacing:-.02em;margin:36px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;cursor:pointer}
+.card:hover,.card.on{border-color:var(--acc)}
+.card h3{margin:0;font-size:18px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.bd{font:500 12px 'JetBrains Mono',monospace;padding:3px 8px;border-radius:5px;border:1px solid;color:var(--w);border-color:color-mix(in srgb,var(--w) 40%,transparent)}
+.card p{margin:10px 0 12px;color:var(--mute);font-size:14.5px}
+.tip{border-left:2px solid var(--acc);padding-left:12px;font-size:14px}
+@media(max-width:700px){.stats b{font-size:20px}#bars{height:240px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<div class="wrap">
+<div class="themes" id="th">Probar paleta:</div>
+<div class="top"><div class="logo">alg<span>O</span></div>
+<div class="ctl"><select id="alg"></select>
+<label class="pill">Elementos <input type="range" id="n" min="10" max="100" value="50"><b class="mono" id="nv" style="color:var(--acc)">50</b></label>
+<label class="pill">Velocidad <input type="range" id="sp" min="1" max="100" value="70"></label>
+<button class="btn" id="gen">Generar</button><button class="btn" id="shuf">Desorganizar</button>
+<button class="btn p" id="run">Iniciar orden</button><button class="btn" id="stop" hidden>Detener</button></div></div>
+<div class="stage"><div id="bars"></div>
+<div class="leg"><span style="--c:var(--bar)">Sin tocar</span><span style="--c:var(--cmp)">Comparando</span><span style="--c:var(--swp)">Moviendo</span><span style="--c:var(--piv)">Pivote</span><span style="--c:var(--ok)">Ordenado</span></div></div>
+<div class="stats"><div><span>Tiempo de ejecución</span><b id="t">0.00 ms</b></div><div><span>Comparaciones</span><b id="cm">0</b></div><div><span>Intercambios</span><b id="sw">0</b></div></div>
+<h2>Sección educativa</h2><div class="grid" id="edu"></div></div>
+<script>
+const TH=[['cobre','Carbón y cobre','#D9814A'],['indigo','Índigo noche','#9AA8FF'],['porcelana','Porcelana','#0F766E'],['bosque','Bosque','#B7E36A']];
+const D={
+bubble:['Bubble Sort','n²',0,'Compara elementos adyacentes y los intercambia si están en orden incorrecto, haciendo que los valores más grandes floten hacia el final.','Intuitivo, pero muy ineficiente en colecciones extensas.'],
+selection:['Selection Sort','n²',0,'Busca el menor de la parte desordenada y lo coloca al principio de la sublista ordenada.','Realiza un número mínimo de intercambios.'],
+insertion:['Insertion Sort','n²',0,'Construye el arreglo ordenado elemento por elemento, reubicando cada valor en su posición correcta.','Muy eficiente cuando el arreglo ya está casi ordenado.'],
+gnome:['Gnome Sort','n²',0,'Avanza si los elementos están en orden y retrocede para intercambiarlos si no lo están.','Combina Insertion Sort con un control de pasos singular.'],
+exchange:['Exchange Sort','n²',0,'Compara el elemento actual con todos los siguientes e intercambia cuando encuentra uno menor.','Fuerza bruta directa y fácil de conceptualizar.'],
+quick:['Quick Sort','n log n',1,'Elige un pivote y divide el arreglo en menores y mayores; repite en cada parte.','De los más rápidos en la práctica con arreglos grandes.'],
+merge:['Merge Sort','n log n',1,'Divide el arreglo a la mitad, ordena cada parte y las fusiona.','Rendimiento óptimo incluso en el peor caso, a cambio de memoria adicional.']};
+const K=Object.keys(D),$=id=>document.getElementById(id);let cur='bubble',a=[],run=0,busy=false,st={c:0,s:0};
+$('th').innerHTML+=TH.map(([k,n,c])=>`<button data-t="${k}" style="--sw:${c}" aria-pressed="${k==='cobre'}"><i></i>${n}</button>`).join('');
+document.querySelectorAll('#th button').forEach(b=>b.onclick=()=>{document.documentElement.dataset.theme=b.dataset.t;document.querySelectorAll('#th button').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+$('alg').innerHTML=K.map(k=>`<option value="${k}">${D[k][0]}</option>`).join('');
+$('alg').onchange=e=>{if(busy)return;cur=e.target.value;reset();draw();mark()};
+$('edu').innerHTML=K.map(k=>`<div class="card" data-k="${k}"><h3>${D[k][0]}<span class="bd" style="--w:${D[k][2]?'#3FB98A':'#D9A03A'}">O(${D[k][1]})</span></h3><p>${D[k][3]}</p><div class="tip">${D[k][4]}</div></div>`).join('');
+document.querySelectorAll('.card').forEach(c=>c.onclick=()=>{if(busy)return;cur=c.dataset.k;$('alg').value=cur;reset();draw();mark()});
+function mark(){document.querySelectorAll('.card').forEach(c=>c.classList.toggle('on',c.dataset.k===cur))}
+function draw(h={}){$('bars').innerHTML=a.map((v,i)=>`<div class="${h.o&&h.o.has(i)?'o ':''}${h.p===i?'p':h.s&&h.s.includes(i)?'s':h.c&&h.c.includes(i)?'c':''}" style="height:${v}%"></div>`).join('')}
+function stats(ms){$('t').textContent=ms.toFixed(2)+' ms';$('cm').textContent=st.c;$('sw').textContent=st.s}
+function reset(){st={c:0,s:0};stats(0)}
+function gen(){a=Array.from({length:+$('n').value},()=>8+Math.floor(Math.random()*92));reset();draw()}
+const wait=()=>new Promise(r=>setTimeout(r,Math.max(0,(101-$('sp').value)**1.6/8)));
+async function algo(k,id,o,step){const ok=()=>id===run,n=a.length;
+const cmp=async(i,j,e={})=>{st.c++;step({c:[i,j],...e});await wait()};
+const swp=async(i,j,e={})=>{[a[i],a[j]]=[a[j],a[i]];st.s++;step({s:[i,j],...e});await wait()};
+if(k==='bubble'){for(let i=0;i<n-1&&ok();i++){for(let j=0;j<n-i-1&&ok();j++){await cmp(j,j+1);if(a[j]>a[j+1])await swp(j,j+1)}o.add(n-i-1)}}
+else if(k==='selection'){for(let i=0;i<n-1&&ok();i++){let m=i;for(let j=i+1;j<n&&ok();j++){await cmp(m,j);if(a[j]<a[m])m=j}if(m!==i)await swp(i,m);o.add(i)}}
+else if(k==='insertion'){for(let i=1;i<n&&ok();i++){let j=i;while(j>0&&ok()){await cmp(j-1,j);if(a[j-1]>a[j]){await swp(j-1,j);j--}else break}}}
+else if(k==='gnome'){let i=0;while(i<n&&ok()){if(i===0){i++;continue}await cmp(i-1,i);if(a[i-1]<=a[i])i++;else{await swp(i-1,i);i--}}}
+else if(k==='exchange'){for(let i=0;i<n-1&&ok();i++){for(let j=i+1;j<n&&ok();j++){await cmp(i,j);if(a[j]<a[i])await swp(i,j)}o.add(i)}}
+else if(k==='quick'){const q=async(l,r)=>{if(l>=r||!ok()){if(l===r)o.add(l);return}const p=a[r];let i=l;for(let j=l;j<r&&ok();j++){await cmp(j,r,{p:r});if(a[j]<p){await swp(i,j,{p:r});i++}}await swp(i,r);o.add(i);await q(l,i-1);await q(i+1,r)};await q(0,n-1)}
+else if(k==='merge'){const m=async(l,r)=>{if(l>=r||!ok())return;const mid=(l+r)>>1;await m(l,mid);await m(mid+1,r);const L=a.slice(l,mid+1),R=a.slice(mid+1,r+1);let i=0,j=0,x=l;while((i<L.length||j<R.length)&&ok()){if(j>=R.length||(i<L.length&&(st.c++,L[i]<=R[j])))a[x]=L[i++];else a[x]=R[j++];st.s++;step({s:[x]});await wait();x++}};await m(0,n-1)}}
+$('run').onclick=async()=>{if(busy)return;busy=true;const id=++run,o=new Set(),t0=performance.now();$('run').hidden=true;$('stop').hidden=false;
+await algo(cur,id,o,h=>{stats(performance.now()-t0);draw({...h,o})});
+if(id===run){draw({o:new Set(a.keys())});stats(performance.now()-t0)}busy=false;$('run').hidden=false;$('stop').hidden=true};
+$('stop').onclick=()=>{run++};$('gen').onclick=()=>{run++;setTimeout(gen,0)};
+$('shuf').onclick=()=>{run++;setTimeout(()=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}reset();draw()},0)};
+$('n').oninput=e=>{$('nv').textContent=e.target.value;if(!busy)gen()};
+gen();mark();
+</script></body></html>
