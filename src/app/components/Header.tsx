@@ -7,10 +7,22 @@ interface HeaderProps {
   onShuffle?: () => void;
   arraySize: number;
   setArraySize: (size: number) => void;
+  animationSpeed: number;
+  setAnimationSpeed: (speed: number) => void;
   sorting: boolean;
 }
 
-export default function Header({ onGenerate, onSort, onShuffle, arraySize, setArraySize, sorting }: HeaderProps) {
+export default function Header({ 
+  onGenerate, 
+  onSort, 
+  onShuffle, 
+  arraySize, 
+  setArraySize, 
+  animationSpeed, 
+  setAnimationSpeed, 
+  sorting 
+}: HeaderProps) {
+  
   // Estado local para permitir escritura libre sin perder el foco
   const [localSize, setLocalSize] = useState<string>(String(arraySize));
 
@@ -67,6 +79,22 @@ export default function Header({ onGenerate, onSort, onShuffle, arraySize, setAr
               disabled={sorting}
               className="w-12 bg-transparent text-cyan-300 text-center font-mono font-bold text-sm border-none focus:ring-0 outline-none"
             />
+          </div>
+
+          {/* El selector de velocidad YA NO se desactiva durante el sorting */}
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface-alt)]">
+            <span className="text-xs text-slate-400 font-mono">Velocidad:</span>
+            <select
+              value={animationSpeed}
+              onChange={(e) => setAnimationSpeed(Number(e.target.value))}
+              // disabled={sorting} <--- Eliminado para permitir cambio en vivo
+              className="bg-transparent text-cyan-300 text-center font-mono font-bold text-sm border-none focus:ring-0 cursor-pointer"
+            >
+              <option value={1}>1x</option>
+              <option value={3}>3x</option>
+              <option value={5}>5x</option>
+              <option value={10}>10x</option>
+            </select>
           </div>
 
           <button 
