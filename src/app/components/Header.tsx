@@ -33,17 +33,25 @@ export default function Header({
   }, [arraySize]);
 
   return (
-    <header className="header-hud p-5 rounded-2xl max-w-6xl mx-auto w-full">
+    <header className="header-hud p-5 rounded-2xl max-w-6xl mx-auto w-full border-b border-[var(--line,#252A3A)] bg-[var(--card,#161927)]">
       <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-black tracking-wider text-gradient-cyan">algO</h1>
-          <p className="text-[10px] text-slate-400 uppercase tracking-widest font-mono mt-0.5">Control & Telemetry HUD</p>
+        {/* Logotipo actualizado con la "O" métrica interactiva */}
+        <div className="flex items-center gap-3">
+          <div className="font-extrabold text-2xl tracking-tight flex items-center gap-0.5 text-slate-100">
+            alg
+            <i aria-hidden="true" className="inline-flex items-end gap-0.5 w-[26px] h-[26px] border-[3px] border-cyan-500 rounded-full p-[0_4px_3px] overflow-hidden not-italic">
+              <b className="flex-1 bg-cyan-500 rounded-[1px]" style={{height:'40%'}}></b>
+              <b className="flex-1 bg-cyan-500 rounded-[1px]" style={{height:'100%'}}></b>
+              <b className="flex-1 bg-cyan-500 rounded-[1px]" style={{height:'65%'}}></b>
+            </i>
+          </div>
+          <p className="text-[10px] text-slate-400 uppercase tracking-widest font-mono mt-0.5 hidden sm:block">Control & Telemetry HUD</p>
         </div>
         
         <div className="flex flex-wrap items-center gap-3">
           <select 
             disabled={sorting}
-            className="px-3 py-2 text-sm font-medium disabled:opacity-50"
+            className="px-3 py-2 text-sm font-medium rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface-alt)] disabled:opacity-50 text-slate-200"
           >
             <option value="bubble">Bubble Sort</option>
             <option value="selection">Selection Sort</option>
@@ -87,10 +95,10 @@ export default function Header({
               onChange={(e) => setAnimationSpeed(Number(e.target.value))}
               className="bg-transparent text-cyan-300 text-center font-mono font-bold text-sm border-none focus:ring-0 cursor-pointer"
             >
-              <option value={1}>1x</option>
-              <option value={3}>3x</option>
-              <option value={5}>5x</option>
-              <option value={10}>10x</option>
+              <option value={1} className="bg-slate-900">1x</option>
+              <option value={3} className="bg-slate-900">3x</option>
+              <option value={5} className="bg-slate-900">5x</option>
+              <option value={10} className="bg-slate-900">10x</option>
             </select>
           </div>
 
