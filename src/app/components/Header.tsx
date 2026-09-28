@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from "react";
 
 interface HeaderProps {
   onGenerate: () => void;
   onSort: () => void;
+  onStop?: () => void;
   onShuffle?: () => void;
   arraySize: number;
   setArraySize: (size: number) => void;
@@ -15,6 +15,7 @@ interface HeaderProps {
 export default function Header({ 
   onGenerate, 
   onSort, 
+  onStop,
   onShuffle, 
   arraySize, 
   setArraySize, 
@@ -60,12 +61,10 @@ export default function Header({
               inputMode="numeric"
               value={localSize}
               onChange={(e) => {
-                // Solo permite números en el estado local temporal
                 const cleanValue = e.target.value.replace(/\D/g, "");
                 setLocalSize(cleanValue);
               }}
               onBlur={() => {
-                // Al salir del input, valida y aplica el rango permitido (5 a 120)
                 const val = Number(localSize);
                 const clamped = isNaN(val) ? 5 : Math.min(Math.max(val, 5), 120);
                 setLocalSize(String(clamped));
@@ -73,7 +72,7 @@ export default function Header({
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  e.currentTarget.blur(); // Fuerza la validación al presionar Enter
+                  e.currentTarget.blur();
                 }
               }}
               disabled={sorting}
@@ -81,13 +80,11 @@ export default function Header({
             />
           </div>
 
-          {/* El selector de velocidad YA NO se desactiva durante el sorting */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface-alt)]">
             <span className="text-xs text-slate-400 font-mono">Velocidad:</span>
             <select
               value={animationSpeed}
               onChange={(e) => setAnimationSpeed(Number(e.target.value))}
-              // disabled={sorting} <--- Eliminado para permitir cambio en vivo
               className="bg-transparent text-cyan-300 text-center font-mono font-bold text-sm border-none focus:ring-0 cursor-pointer"
             >
               <option value={1}>1x</option>
@@ -114,14 +111,23 @@ export default function Header({
               Desorganizar
             </button>
           )}
-          
-          <button 
-            onClick={onSort}
-            disabled={sorting}
-            className="btn-cyber-primary px-5 py-2 text-xs uppercase tracking-wider cursor-pointer disabled:opacity-50"
-          >
-            {sorting ? 'Procesando...' : 'Iniciar Orden'}
-          </button>
+
+          {sorting && onStop ? (
+            <button 
+              onClick={onStop}
+              className="btn-cyber-danger px-5 py-2 text-xs uppercase tracking-wider cursor-pointer bg-red-500/20 border border-red-500/50 text-red-400 hover:bg-red-500/30 transition-all rounded-lg font-mono font-bold"
+            >
+              Detener
+            </button>
+          ) : (
+            <button 
+              onClick={onSort}
+              disabled={sorting}
+              className="btn-cyber-primary px-5 py-2 text-xs uppercase tracking-wider cursor-pointer disabled:opacity-50"
+            >
+              {sorting ? 'Procesando...' : 'Iniciar Orden'}
+            </button>
+          )}
         </div>
       </div>
     </header>

@@ -13,11 +13,14 @@ export default function Home() {
   const [swaps, setSwaps] = useState<number>(0);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
   
-  // Estado para la interfaz y Referencia para la lógica asíncrona
+  // Estado para la velocidad y referencia para control asíncrono
   const [animationSpeed, setAnimationSpeed] = useState<number>(1);
   const speedRef = useRef(1);
 
-  // Mantenemos la referencia siempre actualizada con el estado visual
+  // Referencia para cancelar la ejecución al instante con el botón Detener
+  const stopRequestedRef = useRef(false);
+
+  // Mantenemos la referencia de velocidad actualizada
   useEffect(() => {
     speedRef.current = animationSpeed;
   }, [animationSpeed]);
@@ -36,9 +39,19 @@ export default function Home() {
     generateNewArray();
   }, [arraySize]);
 
+  // Función para detener la ejecución
+  const handleStop = () => {
+    stopRequestedRef.current = true;
+    setSorting(false);
+    setComparing([]);
+  };
+
+  // Lógica completa de Bubble Sort con soporte para Detener y Velocidad en tiempo real
   const startSorting = async () => {
     if (sorting) return;
+    stopRequestedRef.current = false;
     setSorting(true);
+    
     const startTime = performance.now();
     let arr = [...array];
     let compCount = 0;
@@ -46,6 +59,13 @@ export default function Home() {
 
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < arr.length - i - 1; j++) {
+        // VERIFICACIÓN DE INTERRUPCIÓN: Rompe el bucle al instante si se presiona Detener
+        if (stopRequestedRef.current) {
+          setSorting(false);
+          setComparing([]);
+          return;
+        }
+
         setComparing([j, j + 1]);
         compCount++;
         setComparisons(compCount);
@@ -60,16 +80,17 @@ export default function Home() {
         
         setArray([...arr]);
         
-        // Aquí leemos speedRef.current, que siempre tendrá el valor más reciente 
-        // incluso si el usuario lo cambia a mitad de la animación
+        // Pausa controlada por velocidad dinámica
         await new Promise((resolve) => setTimeout(resolve, 20 / speedRef.current));
       }
     }
     
-    setComparing([]);
-    setSorting(false);
-    const endTime = performance.now();
-    setTimeElapsed(Number((endTime - startTime).toFixed(2)));
+    if (!stopRequestedRef.current) {
+      setComparing([]);
+      setSorting(false);
+      const endTime = performance.now();
+      setTimeElapsed(Number((endTime - startTime).toFixed(2)));
+    }
   };
 
   const shuffleArray = () => {
@@ -92,6 +113,7 @@ export default function Home() {
         {...({
           onGenerate: generateNewArray,
           onSort: startSorting,
+          onStop: handleStop, // <--- Prop conectada para el botón detener
           onShuffle: shuffleArray,
           arraySize,
           setArraySize,
