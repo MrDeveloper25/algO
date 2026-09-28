@@ -1,6 +1,5 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Header from "./components/Header";
 import MetricsPanel from "./components/MetricsPanel";
 import EducationalSection from "./components/EducationalSection";
@@ -10,10 +9,18 @@ export default function Home() {
   const [array, setArray] = useState<number[]>([]);
   const [comparing, setComparing] = useState<number[]>([]);
   const [sorting, setSorting] = useState<boolean>(false);
-  
   const [comparisons, setComparisons] = useState<number>(0);
   const [swaps, setSwaps] = useState<number>(0);
   const [timeElapsed, setTimeElapsed] = useState<number>(0);
+  
+  // Estado para la interfaz y Referencia para la lógica asíncrona
+  const [animationSpeed, setAnimationSpeed] = useState<number>(1);
+  const speedRef = useRef(1);
+
+  // Mantenemos la referencia siempre actualizada con el estado visual
+  useEffect(() => {
+    speedRef.current = animationSpeed;
+  }, [animationSpeed]);
 
   const generateNewArray = () => {
     if (sorting) return;
@@ -33,7 +40,6 @@ export default function Home() {
     if (sorting) return;
     setSorting(true);
     const startTime = performance.now();
-
     let arr = [...array];
     let compCount = 0;
     let swapCount = 0;
@@ -43,7 +49,7 @@ export default function Home() {
         setComparing([j, j + 1]);
         compCount++;
         setComparisons(compCount);
-
+        
         if (arr[j] > arr[j + 1]) {
           let temp = arr[j];
           arr[j] = arr[j + 1];
@@ -51,11 +57,15 @@ export default function Home() {
           swapCount++;
           setSwaps(swapCount);
         }
+        
         setArray([...arr]);
-        await new Promise((resolve) => setTimeout(resolve, 20));
+        
+        // Aquí leemos speedRef.current, que siempre tendrá el valor más reciente 
+        // incluso si el usuario lo cambia a mitad de la animación
+        await new Promise((resolve) => setTimeout(resolve, 20 / speedRef.current));
       }
     }
-
+    
     setComparing([]);
     setSorting(false);
     const endTime = performance.now();
@@ -85,15 +95,15 @@ export default function Home() {
           onShuffle: shuffleArray,
           arraySize,
           setArraySize,
+          animationSpeed, 
+          setAnimationSpeed, 
           sorting,
         } as any)}
       />
 
-      {/* Contenedor dinámico de barras con fondo texturizado y profundidad */}
       <div className="w-full max-w-6xl mx-auto h-[420px] bg-gradient-to-b from-[#0b132b]/90 to-[#030712] border border-white/10 rounded-2xl p-6 flex items-end justify-center gap-[1px] overflow-hidden relative shadow-2xl backdrop-blur-xl">
-        {/* Cuadrícula sutil de fondo */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b15_1px,transparent_1px),linear-gradient(to_bottom,#1e293b15_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
-
+        
         {array.map((value, index) => {
           const isComparing = comparing.includes(index);
           return (
@@ -101,16 +111,15 @@ export default function Home() {
               key={index}
               style={{ height: `${(value / 110) * 100}%` }}
               className={`flex-1 transition-all duration-75 rounded-t ${
-                isComparing 
-                  ? 'bg-cyan-400 shadow-[0_0_18px_#22d3ee] scale-y-105 z-10 brightness-125' 
-                  : 'bg-gradient-to-t from-sky-700 via-cyan-600 to-cyan-400 opacity-90 hover:opacity-100'
+                isComparing
+                   ? 'bg-cyan-400 shadow-[0_0_18px_#22d3ee] scale-y-105 z-10 brightness-125'
+                   : 'bg-gradient-to-t from-sky-700 via-cyan-600 to-cyan-400 opacity-90 hover:opacity-100'
               }`}
             />
           );
         })}
       </div>
 
-      {/* Panel de Métricas Alineado */}
       <div className="w-full">
         <MetricsPanel
           {...({
