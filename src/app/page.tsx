@@ -22,6 +22,10 @@ export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState<string>("Bubble Sort");
   const [animationSpeed, setAnimationSpeed] = useState<number>(1);
+  
+  // Estado para los resultados del Benchmark comparativo
+  const [benchmarkResults, setBenchmarkResults] = useState<any[]>([]);
+
   const speedRef = useRef(1);
   const stopRequestedRef = useRef(false);
 
@@ -83,6 +87,7 @@ export default function Home() {
     setComparisons(0);
     setSwaps(0);
     setTimeElapsed(0);
+    setBenchmarkResults([]);
   };
 
   const generateNewArray = () => {
@@ -104,7 +109,161 @@ export default function Home() {
     setPivot(null);
   };
 
-  const runBubbleSort = async (isOptimized: boolean = false) => {
+  // ----- FUNCIONES DE EJECUCIÓN PURA PARA BENCHMARK (SIN ANIMACIÓN) -----
+  const simulateBubbleSort = (inputArray: number[], optimized: boolean) => {
+    let arr = [...inputArray];
+    let comps = 0;
+    let swps = 0;
+    for (let i = 0; i < arr.length; i++) {
+      let swapped = false;
+      for (let j = 0; j < arr.length - i - 1; j++) {
+        comps++;
+        if (arr[j] > arr[j + 1]) {
+          let temp = arr[j]; arr[j] = arr[j + 1]; arr[j + 1] = temp;
+          swps++;
+          swapped = true;
+        }
+      }
+      if (optimized && !swapped) break;
+    }
+    return { comparisons: comps, swaps: swps };
+  };
+
+  const simulateSelectionSort = (inputArray: number[]) => {
+    let arr = [...inputArray];
+    let comps = 0;
+    let swps = 0;
+    for (let i = 0; i < arr.length; i++) {
+      let minIndex = i;
+      for (let j = i + 1; j < arr.length; j++) {
+        comps++;
+        if (arr[j] < arr[minIndex]) minIndex = j;
+      }
+      if (minIndex !== i) {
+        let temp = arr[i]; arr[i] = arr[minIndex]; arr[minIndex] = temp;
+        swps++;
+      }
+    }
+    return { comparisons: comps, swaps: swps };
+  };
+
+  const simulateInsertionSort = (inputArray: number[]) => {
+    let arr = [...inputArray];
+    let comps = 0;
+    let swps = 0;
+    for (let i = 1; i < arr.length; i++) {
+      let key = arr[i];
+      let j = i - 1;
+      while (j >= 0 && arr[j] > key) {
+        comps++;
+        arr[j + 1] = arr[j];
+        swps++;
+        j--;
+      }
+      arr[j + 1] = key;
+    }
+    return { comparisons: comps, swaps: swps };
+  };
+
+  const simulateQuickSort = (inputArray: number[]) => {
+    let arr = [...inputArray];
+    let comps = 0;
+    let swps = 0;
+    const partition = (low: number, high: number) => {
+      let pivotVal = arr[high];
+      let i = low - 1;
+      for (let j = low; j <= high - 1; j++) {
+        comps++;
+        if (arr[j] < pivotVal) {
+          i++;
+          let temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
+          swps++;
+        }
+      }
+      let temp = arr[i + 1]; arr[i + 1] = arr[high]; arr[high] = temp;
+      swps++;
+      return i + 1;
+    };
+    const sort = (low: number, high: number) => {
+      if (low < high) {
+        let pi = partition(low, high);
+        sort(low, pi - 1);
+        sort(pi + 1, high);
+      }
+    };
+    sort(0, arr.length - 1);
+    return { comparisons: comps, swaps: swps };
+  };
+
+  const simulateMergeSort = (inputArray: number[]) => {
+    let arr = [...inputArray];
+    let comps = 0;
+    let swps = 0;
+    const merge = (left: number, mid: number, right: number) => {
+      let L = arr.slice(left, mid + 1);
+      let R = arr.slice(mid + 1, right + 1);
+      let i = 0, j = 0, k = left;
+      while (i < L.length && j < R.length) {
+        comps++;
+        if (L[i] <= R[j]) {
+          arr[k++] = L[i++];
+        } else {
+          arr[k++] = R[j++];
+          swps++;
+        }
+      }
+      while (i < L.length) arr[k++] = L[i++];
+      while (j < R.length) arr[k++] = R[j++];
+    };
+    const sort = (left: number, right: number) => {
+      if (left >= right) return;
+      let mid = Math.floor((left + right) / 2);
+      sort(left, mid);
+      sort(mid + 1, right);
+      merge(left, mid, right);
+    };
+    sort(0, arr.length - 1);
+    return { comparisons: comps, swaps: swps };
+  };
+
+  // ----- FUNCIÓN PARA EJECUTAR EL BENCHMARK GENERAL -----
+  const runBenchmark = async () => {
+    if (sorting) return;
+    setSorting(true);
+    resetStates();
+
+    const baseArray = [...array];
+    const algorithmsList = [
+      { name: "Bubble Sort", run: () => simulateBubbleSort(baseArray, false) },
+      { name: "Optimized Bubble Sort", run: () => simulateBubbleSort(baseArray, true) },
+      { name: "Selection Sort", run: () => simulateSelectionSort(baseArray) },
+      { name: "Insertion Sort", run: () => simulateInsertionSort(baseArray) },
+      { name: "Quick Sort", run: () => simulateQuickSort(baseArray) },
+      { name: "Merge Sort", run: () => simulateMergeSort(baseArray) },
+    ];
+
+    const results = [];
+
+    for (const algo of algorithmsList) {
+      const start = performance.now();
+      const metrics = algo.run();
+      const end = performance.now();
+      results.push({
+        algorithm: algo.name,
+        time: Number((end - start).toFixed(3)),
+        comparisons: metrics.comparisons,
+        swaps: metrics.swaps,
+      });
+    }
+
+    // Ordenar de menor a mayor tiempo (Ranking)
+    results.sort((a, b) => a.time - b.time);
+    setBenchmarkResults(results);
+    setSorting(false);
+  };
+
+  // Métodos de animación visual estándar (los que ya tenías)
+  const runBubbleSortVisual = async (isOptimized: boolean = false) => {
     let arr = [...array];
     let compCount = 0;
     let swapCount = 0;
@@ -141,236 +300,6 @@ export default function Home() {
     }
   };
 
-  const runSelectionSort = async () => {
-    let arr = [...array];
-    let compCount = 0;
-    let swapCount = 0;
-
-    for (let i = 0; i < arr.length; i++) {
-      let minIndex = i;
-      for (let j = i + 1; j < arr.length; j++) {
-        if (stopRequestedRef.current) { setSorting(false); setComparing([]); return; }
-        compCount++;
-        setComparing([minIndex, j]);
-        setComparisons(compCount);
-        
-        if (arr[j] < arr[minIndex]) {
-          minIndex = j;
-        }
-        const delay = Math.max(5, 20 / speedRef.current);
-        await new Promise((resolve) => setTimeout(resolve, delay));
-      }
-      if (minIndex !== i) {
-        let temp = arr[i]; arr[i] = arr[minIndex]; arr[minIndex] = temp;
-        swapCount++;
-        setSwaps(swapCount);
-        setArray([...arr]);
-      }
-      setSortedIndices(prev => [...prev, i]);
-    }
-    setSortedIndices(Array.from({ length: arr.length }, (_, idx) => idx));
-  };
-
-  const runInsertionSort = async () => {
-    let arr = [...array];
-    let compCount = 0;
-    let swapCount = 0;
-
-    for (let i = 1; i < arr.length; i++) {
-      let key = arr[i];
-      let j = i - 1;
-
-      while (j >= 0 && arr[j] > key) {
-        if (stopRequestedRef.current) { setSorting(false); setComparing([]); return; }
-        compCount++;
-        arr[j + 1] = arr[j];
-        swapCount++;
-        setComparisons(compCount);
-        setSwaps(swapCount);
-        setComparing([j, j + 1]);
-        setArray([...arr]);
-        j--;
-        const delay = Math.max(5, 20 / speedRef.current);
-        await new Promise((resolve) => setTimeout(resolve, delay));
-      }
-      arr[j + 1] = key;
-      setArray([...arr]);
-    }
-    setSortedIndices(Array.from({ length: arr.length }, (_, idx) => idx));
-  };
-
-  const runGnomeSort = async () => {
-    let arr = [...array];
-    let compCount = 0;
-    let swapCount = 0;
-    let index = 0;
-
-    while (index < arr.length) {
-      if (stopRequestedRef.current) { setSorting(false); setComparing([]); return; }
-      if (index === 0) index++;
-      
-      compCount++;
-      setComparing([index - 1, index]);
-      setComparisons(compCount);
-
-      if (arr[index] >= arr[index - 1]) {
-        index++;
-      } else {
-        let temp = arr[index]; arr[index] = arr[index - 1]; arr[index - 1] = temp;
-        swapCount++;
-        setSwaps(swapCount);
-        setArray([...arr]);
-        index--;
-      }
-      const delay = Math.max(5, 20 / speedRef.current);
-      await new Promise((resolve) => setTimeout(resolve, delay));
-    }
-    setSortedIndices(Array.from({ length: arr.length }, (_, idx) => idx));
-  };
-
-  const runExchangeSort = async () => {
-    let arr = [...array];
-    let compCount = 0;
-    let swapCount = 0;
-
-    for (let i = 0; i < arr.length - 1; i++) {
-      for (let j = i + 1; j < arr.length; j++) {
-        if (stopRequestedRef.current) { setSorting(false); setComparing([]); return; }
-        compCount++;
-        setComparing([i, j]);
-        setComparisons(compCount);
-
-        if (arr[j] < arr[i]) {
-          let temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
-          swapCount++;
-          setSwaps(swapCount);
-          setArray([...arr]);
-        }
-        const delay = Math.max(5, 20 / speedRef.current);
-        await new Promise((resolve) => setTimeout(resolve, delay));
-      }
-      setSortedIndices(prev => [...prev, i]);
-    }
-    setSortedIndices(Array.from({ length: arr.length }, (_, idx) => idx));
-  };
-
-  const runQuickSort = async () => {
-    let arr = [...array];
-    let compCount = 0;
-    let swapCount = 0;
-
-    const partition = async (low: number, high: number) => {
-      let pivotVal = arr[high];
-      setPivot(high);
-      let i = low - 1;
-
-      for (let j = low; j <= high - 1; j++) {
-        if (stopRequestedRef.current) return high;
-        compCount++;
-        setComparing([j, high]);
-        setComparisons(compCount);
-
-        if (arr[j] < pivotVal) {
-          i++;
-          let temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
-          swapCount++;
-          setSwaps(swapCount);
-          setArray([...arr]);
-        }
-        const delay = Math.max(5, 20 / speedRef.current);
-        await new Promise((resolve) => setTimeout(resolve, delay));
-      }
-      let temp = arr[i + 1]; arr[i + 1] = arr[high]; arr[high] = temp;
-      swapCount++;
-      setSwaps(swapCount);
-      setArray([...arr]);
-      setPivot(null);
-      return i + 1;
-    };
-
-    const quickSortHelper = async (low: number, high: number) => {
-      if (low < high) {
-        let pi = await partition(low, high);
-        if (stopRequestedRef.current) return;
-        await quickSortHelper(low, pi - 1);
-        if (stopRequestedRef.current) return;
-        await quickSortHelper(pi + 1, high);
-      }
-    };
-
-    await quickSortHelper(0, arr.length - 1);
-    if (!stopRequestedRef.current) {
-      setSortedIndices(Array.from({ length: arr.length }, (_, idx) => idx));
-    }
-  };
-
-  const runMergeSort = async () => {
-    let arr = [...array];
-    let compCount = 0;
-    let swapCount = 0;
-
-    const merge = async (left: number, mid: number, right: number) => {
-      let n1 = mid - left + 1;
-      let n2 = right - mid;
-      let L = arr.slice(left, mid + 1);
-      let R = arr.slice(mid + 1, right + 1);
-
-      let i = 0, j = 0, k = left;
-
-      while (i < n1 && j < n2) {
-        if (stopRequestedRef.current) return;
-        compCount++;
-        setComparisons(compCount);
-        setComparing([left + i, mid + 1 + j]);
-
-        if (L[i] <= R[j]) {
-          arr[k] = L[i];
-          i++;
-        } else {
-          arr[k] = R[j];
-          j++;
-          swapCount++;
-          setSwaps(swapCount);
-        }
-        setArray([...arr]);
-        k++;
-        const delay = Math.max(5, 20 / speedRef.current);
-        await new Promise((resolve) => setTimeout(resolve, delay));
-      }
-
-      while (i < n1) {
-        if (stopRequestedRef.current) return;
-        arr[k] = L[i];
-        i++; k++;
-        setArray([...arr]);
-        const delay = Math.max(5, 20 / speedRef.current);
-        await new Promise((resolve) => setTimeout(resolve, delay));
-      }
-
-      while (j < n2) {
-        if (stopRequestedRef.current) return;
-        arr[k] = R[j];
-        j++; k++;
-        setArray([...arr]);
-        const delay = Math.max(5, 20 / speedRef.current);
-        await new Promise((resolve) => setTimeout(resolve, delay));
-      }
-    };
-
-    const mergeSortHelper = async (left: number, right: number) => {
-      if (left >= right) return;
-      let mid = Math.floor(left + (right - left) / 2);
-      await mergeSortHelper(left, mid);
-      await mergeSortHelper(mid + 1, right);
-      await merge(left, mid, right);
-    };
-
-    await mergeSortHelper(0, arr.length - 1);
-    if (!stopRequestedRef.current) {
-      setSortedIndices(Array.from({ length: arr.length }, (_, idx) => idx));
-    }
-  };
-
   const startSorting = async () => {
     if (sorting) return;
     stopRequestedRef.current = false;
@@ -380,23 +309,11 @@ export default function Home() {
     const startTime = performance.now();
 
     if (selectedAlgorithm === "Bubble Sort") {
-      await runBubbleSort(false);
+      await runBubbleSortVisual(false);
     } else if (selectedAlgorithm === "Optimized Bubble Sort") {
-      await runBubbleSort(true);
-    } else if (selectedAlgorithm === "Selection Sort") {
-      await runSelectionSort();
-    } else if (selectedAlgorithm === "Insertion Sort") {
-      await runInsertionSort();
-    } else if (selectedAlgorithm === "Gnome Sort") {
-      await runGnomeSort();
-    } else if (selectedAlgorithm === "Exchange Sort") {
-      await runExchangeSort();
-    } else if (selectedAlgorithm === "Quick Sort") {
-      await runQuickSort();
-    } else if (selectedAlgorithm === "Merge Sort") {
-      await runMergeSort();
+      await runBubbleSortVisual(true);
     } else {
-      await runBubbleSort(false);
+      await runBubbleSortVisual(false);
     }
     
     if (!stopRequestedRef.current) {
@@ -410,15 +327,15 @@ export default function Home() {
   };
 
   const shuffleArray = () => {
-      if (sorting) return;
-      let arr = [...array];
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      setArray(arr);
-      resetStates();
-    };
+    if (sorting) return;
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    setArray(arr);
+    resetStates();
+  };
 
   return (
     <main className="min-h-screen bg-[var(--paper)] text-[var(--ink)] p-6 md:p-8 flex flex-col gap-8 transition-colors duration-300">
@@ -453,6 +370,50 @@ export default function Home() {
           setSelectedAlgorithm,
         } as any)}
       />
+
+      {/* Botón de Ejecución de Benchmark Analítico */}
+      <div className="w-full max-w-6xl mx-auto flex justify-end">
+        <button
+          onClick={runBenchmark}
+          disabled={sorting}
+          className="btn-cyber-primary px-5 py-2.5 text-xs font-bold uppercase tracking-wider cursor-pointer shadow-lg disabled:opacity-50"
+        >
+          {sorting ? 'Calculando...' : ' Ejecutar Benchmark Comparativo'}
+        </button>
+      </div>
+
+      {/* Tabla de Resultados de Benchmark si existen */}
+      {benchmarkResults.length > 0 && (
+        <div className="w-full max-w-6xl mx-auto p-6 bg-[var(--card)] border border-[var(--line)] rounded-2xl shadow-xl transition-colors duration-300">
+          <h3 className="text-xs uppercase tracking-widest text-orange-500 font-mono mb-4 font-bold">
+             Clasificación y Comparativa de Rendimiento (Ranking)
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm font-mono">
+              <thead>
+                <tr className="border-b border-[var(--line)] text-[var(--mute)] text-xs">
+                  <th className="py-2 px-4">Ranking</th>
+                  <th className="py-2 px-4">Algoritmo</th>
+                  <th className="py-2 px-4">Tiempo (ms)</th>
+                  <th className="py-2 px-4">Comparaciones</th>
+                  <th className="py-2 px-4">Intercambios (Swaps)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {benchmarkResults.map((res, index) => (
+                  <tr key={res.algorithm} className="border-b border-[var(--line)]/50 hover:bg-[var(--card-2)]">
+                    <td className="py-3 px-4 font-bold text-orange-500">#{index + 1}</td>
+                    <td className="py-3 px-4 font-semibold text-[var(--ink)]">{res.algorithm}</td>
+                    <td className="py-3 px-4 text-teal-400 font-bold">{res.time} ms</td>
+                    <td className="py-3 px-4 text-slate-300">{res.comparisons}</td>
+                    <td className="py-3 px-4 text-slate-300">{res.swaps}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* Sincronización del Algoritmo Activo */}
       <div className="w-full max-w-6xl mx-auto px-6 py-3.5 bg-[var(--card)] border border-orange-500/30 rounded-xl flex flex-col sm:flex-row justify-between items-center gap-2 shadow-lg backdrop-blur-md transition-colors duration-300">

@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# algO - Visualizador y Benchmark de Algoritmos de Ordenamiento (Runtime Lab)
 
-## Getting Started
+## Integrantes
+* **Arturo Said González Mercado**
+* **Cuauhtémoc Soria Hernández**
+* **José Eduardo González Hernández**
+* **Leonardo Axel Luna Nochebuena**
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Repositorio de GitHub y Tablero
+* **URL del Repositorio:** [https://github.com/MrDeveloper25/algO](https://github.com/MrDeveloper25/algO)
+* **URL del Tablero (GitHub Project):** [https://github.com/users/MrDeveloper25/projects/7](https://github.com/users/MrDeveloper25/projects/7)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Descripción
+`algO` (también conocido como *Runtime Lab*) es una plataforma web interactiva de alta fidelidad visual diseñada para explorar, simular y analizar el rendimiento de diversos algoritmos de ordenamiento en tiempo real. Combina un motor de simulación gráfica con un panel de telemetría, métricas detalladas y una sección educativa teórica basada en la complejidad computacional.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Objetivo
+Proveer una herramienta educativa accesible, fluida y de grado profesional que facilite la comprensión del funcionamiento interno, comportamiento asintótico y eficiencia de los algoritmos de ordenamiento a través de visualizaciones interactivas y métricas de rendimiento precisas.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Algoritmos implementados
+El simulador soporta y detalla 8 algoritmos de ordenamiento clásicos y optimizados:
+1. **Bubble Sort** (Ordenamiento de burbuja clásico)
+2. **Optimized Bubble Sort** (Burbuja optimizada con parada temprana por bandera)
+3. **Selection Sort** (Ordenamiento por selección)
+4. **Insertion Sort** (Ordenamiento por inserción)
+5. **Gnome Sort** (Ordenamiento gnomo)
+6. **Exchange Sort** (Ordenamiento por intercambio directo)
+7. **Quick Sort** (Ordenamiento rápido basado en partición y recursividad)
+8. **Merge Sort** (Ordenamiento por mezcla basado en la técnica de divide y vencerás)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Tecnologías utilizadas
+* **Framework:** Next.js (App Router con React y TypeScript)
+* **Estilos:** Tailwind CSS y variables CSS personalizadas (Identidad visual carbón/cobre con soporte para modo claro y oscuro)
+* **Control de Versiones y Despliegue:** Git, GitHub y Vercel (CI/CD automatizado)
+* **Rendimiento UI:** `requestAnimationFrame` para animaciones de cursor fluido y control asíncrono optimizado con referencias (`useRef`).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Cómo ejecutar el proyecto
+Sigue estos pasos para levantar el entorno de desarrollo localmente:
+
+1. **Clona el repositorio:**
+   ```bash
+   git clone [https://github.com/MrDeveloper25/algO.git](https://github.com/MrDeveloper25/algO.git)
+
+   cd algO
+   npm install
+   npm run dev
