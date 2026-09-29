@@ -47,6 +47,7 @@ export default function Home() {
   };
 
   // Lógica completa de Bubble Sort con soporte para Detener y Velocidad en tiempo real
+  // Lógica de Ordenamiento con Burbuja Mejorada, Detener y Velocidad
   const startSorting = async () => {
     if (sorting) return;
     stopRequestedRef.current = false;
@@ -56,16 +57,20 @@ export default function Home() {
     let arr = [...array];
     let compCount = 0;
     let swapCount = 0;
+    let swapped: boolean; // <--- Bandera de optimización
 
+    // Aquí comienza el ciclo actualizado
     for (let i = 0; i < arr.length; i++) {
+      swapped = false; 
+      
       for (let j = 0; j < arr.length - i - 1; j++) {
-        // VERIFICACIÓN DE INTERRUPCIÓN: Rompe el bucle al instante si se presiona Detener
+        // Rompe el bucle al instante si se presiona Detener
         if (stopRequestedRef.current) {
           setSorting(false);
           setComparing([]);
           return;
         }
-
+        
         setComparing([j, j + 1]);
         compCount++;
         setComparisons(compCount);
@@ -76,6 +81,7 @@ export default function Home() {
           arr[j + 1] = temp;
           swapCount++;
           setSwaps(swapCount);
+          swapped = true; // <--- Registra que hubo un intercambio
         }
         
         setArray([...arr]);
@@ -83,6 +89,9 @@ export default function Home() {
         // Pausa controlada por velocidad dinámica
         await new Promise((resolve) => setTimeout(resolve, 20 / speedRef.current));
       }
+      
+      // OPTIMIZACIÓN: Si en toda la pasada no hubo intercambios, detiene la animación
+      if (!swapped) break; 
     }
     
     if (!stopRequestedRef.current) {
