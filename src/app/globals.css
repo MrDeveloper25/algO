@@ -135,24 +135,41 @@ select:hover, input[type="number"]:hover { border-color: var(--mute); }
 select:focus, input[type="number"]:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.28); }
 input[type="range"] { accent-color: var(--blue); }
 
+/* --- BOTONES CON TACTO DINÁMICO --- */
 .btn-cyber-primary {
-  background: var(--blue); color: #0B0C10; font-weight: 700; border: 1px solid var(--blue); border-radius: var(--radius-md); transition: filter 0.15s ease;
+  background: var(--blue); color: #0B0C10; font-weight: 700; border: 1px solid var(--blue); border-radius: var(--radius-md); 
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.15s ease, box-shadow 0.2s ease;
 }
-.btn-cyber-primary:hover:not(:disabled) { filter: brightness(1.12); }
-.btn-cyber-primary:active:not(:disabled) { transform: translateY(1px); }
+.btn-cyber-primary:hover:not(:disabled) { filter: brightness(1.12); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3); }
+.btn-cyber-primary:active:not(:disabled) { transform: translateY(1px) scale(0.97); }
 
 .btn-cyber-secondary {
-  background: transparent; color: var(--ink); border: 1px solid var(--line); font-weight: 500; border-radius: var(--radius-md); transition: background-color 0.15s ease, border-color 0.15s ease;
+  background: transparent; color: var(--ink); border: 1px solid var(--line); font-weight: 500; border-radius: var(--radius-md); 
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.2s ease;
 }
-.btn-cyber-secondary:hover:not(:disabled) { background: var(--card-2); border-color: var(--mute); }
-.btn-cyber-secondary:active:not(:disabled) { transform: translateY(1px); }
+.btn-cyber-secondary:hover:not(:disabled) { background: var(--card-2); border-color: var(--mute); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+.btn-cyber-secondary:active:not(:disabled) { transform: translateY(1px) scale(0.97); }
 button:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .metric-card { background: transparent; border-left: 1px solid var(--line); padding: 1rem 0 1rem 1.25rem; transition: border-color 0.3s ease; }
 .metric-card:first-child { border-left: 0; padding-left: 0; }
 
-.edu-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-xl); transition: border-color 0.15s ease, background-color 0.3s ease; }
-.edu-card:hover { border-color: var(--mute); }
+/* --- TARJETAS EDUCATIVAS CON EFECTO TÁCTIL Y FLUIDO --- */
+.edu-card { 
+  background: var(--card); 
+  border: 1px solid var(--line); 
+  border-radius: var(--radius-xl); 
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+.edu-card:hover { 
+  border-color: var(--blue); 
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 12px 30px -10px rgba(249, 115, 22, 0.25);
+}
+.edu-card:active {
+  transform: translateY(-1px) scale(0.99);
+}
 
 .complexity-badge { background: var(--badge-bg); border: 1px solid var(--badge-border); color: var(--badge-text); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; padding: 0.2rem 0.55rem; border-radius: var(--radius-sm); }
 .complexity-badge.complexity-fast { color: var(--success-text); border-color: rgba(61, 220, 151, 0.35); }
