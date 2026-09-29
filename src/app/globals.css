@@ -264,3 +264,11 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+
+/* ---------- Ocultar cursor nativo globalmente ---------- */
+*, *::before, *::after {
+  cursor: none !important;
+}
+
+
