@@ -54,6 +54,7 @@ export default function Header({
             className="px-3 py-2 text-sm font-medium rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface-alt)] disabled:opacity-50 text-slate-200"
           >
             <option value="bubble">Bubble Sort</option>
+            <option value="optimizedBubble">Optimized Bubble Sort</option>
             <option value="selection">Selection Sort</option>
             <option value="insertion">Insertion Sort</option>
             <option value="gnome">Gnome Sort</option>

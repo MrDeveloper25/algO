@@ -19,7 +19,7 @@ export interface AlgorithmResult {
 }
 
 // ==========================================
-// ALGORITMOS DE FUERZA BRUTA (5)
+// ALGORITMOS DE FUERZA BRUTA (6)
 // ==========================================
 
 export function bubbleSort(arr: number[]): AlgorithmResult {
@@ -44,6 +44,43 @@ export function bubbleSort(arr: number[]): AlgorithmResult {
     }
   }
   return { algorithmName: "Bubble Sort", sortedArray: arrayCopy, history, executionTimeMs: performance.now() - startTime, comparisons, swaps };
+}
+
+export function optimizedBubbleSort(arr: number[]): AlgorithmResult {
+  const history: StepRecord[] = [];
+  let comparisons = 0, swaps = 0;
+  const startTime = performance.now();
+  let arrayCopy = [...arr];
+  let n = arrayCopy.length;
+  let swapped: boolean;
+
+  for (let i = 0; i < n - 1; i++) {
+    swapped = false;
+    for (let j = 0; j < n - i - 1; j++) {
+      comparisons++;
+      history.push({ currentArray: [...arrayCopy], comparingIndices: [j, j + 1], swapped: false });
+      
+      if (arrayCopy[j] > arrayCopy[j + 1]) {
+        let temp = arrayCopy[j];
+        arrayCopy[j] = arrayCopy[j + 1];
+        arrayCopy[j + 1] = temp;
+        swaps++;
+        swapped = true;
+        history.push({ currentArray: [...arrayCopy], comparingIndices: [j, j + 1], swapped: true });
+      }
+    }
+    // Si no hubo intercambios, el arreglo ya está ordenado
+    if (!swapped) break;
+  }
+  
+  return { 
+    algorithmName: "Optimized Bubble Sort", 
+    sortedArray: arrayCopy, 
+    history, 
+    executionTimeMs: performance.now() - startTime, 
+    comparisons, 
+    swaps 
+  };
 }
 
 export function selectionSort(arr: number[]): AlgorithmResult {

@@ -7,6 +7,12 @@ export default function EducationalSection() {
       insight: "Intuitivo pero muy ineficiente en colecciones de datos extensas."
     },
     {
+      name: "Optimized Bubble Sort",
+      complexity: "O(n²)",
+      description: "Mejora del Bubble Sort clásico que incluye una bandera para detectar si el arreglo ya está ordenado, deteniendo la ejecución tempranamente y ahorrando iteraciones innecesarias.",
+      insight: "Reduce el tiempo de ejecución a O(n) en el mejor de los casos (cuando los datos ya están ordenados)."
+    },
+    {
       name: "Selection Sort",
       complexity: "O(n²)",
       description: "Busca repetidamente el elemento menor de la parte desordenada y lo coloca al principio de la sub-lista ordenada.",
