@@ -1,10 +1,9 @@
 @import "tailwindcss";
 
 /* ============================================================
-   algO - identidad visual v2 (Contraste dinámico de Barras)
+   algO - Identidad Visual Unificada (Carbón/Cobre + Extras)
    ============================================================ */
 :root {
-  /* Modo Oscuro (Por defecto) */
   --paper: #0B0C10;      
   --card: #12141A;       
   --card-2: #171A22;     
@@ -13,21 +12,19 @@
   --mute: #8A90A0;       
   --blue: #F97316;       /* Acento Cobre */
 
-  /* Colores de Barras - Vibrantes para fondo oscuro */
-  --bar: #3F3F46;        /* Gris carbón */
-  --cmp: #F5C542;        /* Amarillo brillante */
-  --swp: #EF4444;        /* Rojo brillante */
-  --ok: #14B8A6;         /* Turquesa brillante */
-  --pivot: #FFFFFF;      /* Blanco puro */
+  /* Colores de Barras - Modo Oscuro */
+  --bar: #3F3F46;        
+  --cmp: #F5C542;        
+  --swp: #EF4444;        
+  --ok: #14B8A6;         
+  --pivot: #FFFFFF;      
   
-  /* Resplandores (Sombras) - Modo Oscuro */
   --glow-cmp: rgba(245, 197, 66, 0.6);
   --glow-swp: rgba(239, 68, 68, 0.6);
   --glow-ok: rgba(20, 184, 166, 0.4);
   --glow-pivot: rgba(255, 255, 255, 0.4);
 
   --grid-line: rgba(255, 255, 255, 0.035);
-  
   --badge-text: #E0A93B;
   --badge-border: rgba(224, 169, 59, 0.35);
   --badge-bg: transparent;
@@ -43,7 +40,6 @@
   --font-mono: var(--font-plex-mono, ui-monospace), ui-monospace, monospace;
 }
 
-/* Variables para el Modo Claro */
 .light-mode {
   --paper: #F3F4F6;
   --card: #FFFFFF;
@@ -52,14 +48,12 @@
   --ink: #111827;
   --mute: #6B7280;
   
-  /* Colores de Barras - Profundos y saturados para fondo blanco */
-  --bar: #9CA3AF;        /* Gris medio (se distingue bien del blanco) */
-  --cmp: #D97706;        /* Ámbar profundo (reemplaza al amarillo claro) */
-  --swp: #DC2626;        /* Carmesí oscuro (más fuerte que el rojo claro) */
-  --ok:  #0D9488;        /* Verde azulado profundo (turquesa oscurecido) */
-  --pivot: #111827;      /* Casi negro (reemplaza al blanco) */
+  --bar: #9CA3AF;        
+  --cmp: #D97706;        
+  --swp: #DC2626;        
+  --ok:  #0D9488;        
+  --pivot: #111827;      
 
-  /* Resplandores (Sombras) - Modo Claro (sutiles para no ensuciar el blanco) */
   --glow-cmp: rgba(217, 119, 6, 0.4);
   --glow-swp: rgba(220, 38, 38, 0.4);
   --glow-ok: rgba(13, 148, 136, 0.3);
@@ -76,6 +70,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: none !important; /* Oculta el cursor nativo integrado por tu compañero */
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
@@ -102,7 +97,6 @@ body {
   background-size: 100% 25%;
 }
 
-/* ---------- Lógica visual dinámica de los 5 estados ---------- */
 .bar-default {
   background: var(--bar);
   border-radius: 2px 2px 0 0;
@@ -115,29 +109,24 @@ body {
   box-shadow: 0 0 15px var(--glow-cmp) !important; 
   transform: scaleY(1.05); 
   z-index: 10; 
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 .bar-swapping { 
   background: var(--swp) !important; 
   box-shadow: 0 0 15px var(--glow-swp) !important; 
   transform: scaleY(1.05); 
   z-index: 10; 
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 .bar-sorted { 
   background: var(--ok) !important; 
   box-shadow: 0 0 10px var(--glow-ok) !important; 
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 .bar-pivot { 
   background: var(--pivot) !important; 
   box-shadow: 0 0 10px var(--glow-pivot) !important; 
   transform: scaleY(1.05); 
   z-index: 10; 
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* ---------- Textos y Controles ---------- */
 .text-cyber-heading { color: var(--ink); font-weight: 800; letter-spacing: -0.03em; }
 
 select, input[type="number"] {

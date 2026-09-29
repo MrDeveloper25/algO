@@ -31,7 +31,7 @@ export default function Header({
   return (
     <header className="header-hud p-5 rounded-2xl max-w-6xl mx-auto w-full border-b border-[var(--line)] bg-[var(--card)] transition-colors duration-300">
       <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
-        {/* Logotipo dinámico */}
+        {/* Logotipo */}
         <div className="flex items-center gap-3">
           <div className="font-extrabold text-2xl tracking-tight flex items-center gap-0.5 text-[var(--ink)]">
             alg
@@ -59,6 +59,7 @@ export default function Header({
             <option value="merge">Merge Sort</option>
           </select>
 
+          {/* Slider Elementos */}
           <div className="flex items-center gap-3 px-3 py-2 rounded-lg border border-[var(--line)] bg-[var(--card-2)]">
             <span className="text-xs text-[var(--mute)] font-mono">Elementos</span>
             <input 
@@ -74,6 +75,7 @@ export default function Header({
             <span className="text-orange-500 font-mono font-bold text-xs w-6 text-right">{arraySize}</span>
           </div>
 
+          {/* Slider Velocidad */}
           <div className="flex items-center gap-3 px-3 py-2 rounded-lg border border-[var(--line)] bg-[var(--card-2)]">
             <span className="text-xs text-[var(--mute)] font-mono">Velocidad</span>
             <input
@@ -88,7 +90,7 @@ export default function Header({
             <span className="text-orange-500 font-mono font-bold text-xs w-6 text-right">{animationSpeed}x</span>
           </div>
 
-          {/* Botón para cambiar el tema */}
+          {/* Botón de Modo Claro / Oscuro */}
           <button 
             onClick={toggleTheme}
             className="btn-cyber-secondary px-4 py-2 text-xs font-semibold uppercase tracking-wider cursor-pointer border-[var(--line)] text-[var(--ink)]"
