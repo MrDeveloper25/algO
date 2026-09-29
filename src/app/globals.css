@@ -70,7 +70,6 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.3s ease, color 0.3s ease;
-  cursor: none !important; /* Oculta el cursor nativo integrado por tu compañero */
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
@@ -161,3 +160,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 .cyber-divider { height: 1px; background: var(--line); width: 100%; margin: 2rem 0; }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+*, *::before, *::after {
+  cursor: none !important;
+}

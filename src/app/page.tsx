@@ -27,7 +27,7 @@ export default function Home() {
   // Modo Claro / Oscuro
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
 
-  // Referencias para el cursor personalizado de tu compañero
+  // Referencias para el cursor personalizado
   const cursorRef = useRef<HTMLDivElement>(null);
   const [isPointer, setIsPointer] = useState(false);
   const mousePos = useRef({ x: -100, y: -100 });
@@ -186,7 +186,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[var(--paper)] text-[var(--ink)] p-6 md:p-8 flex flex-col gap-8 transition-colors duration-300">
       
-      {/* CURSOR PERSONALIZADO UNIFICADO (Con acento Cobre) */}
+      {/* CURSOR PERSONALIZADO */}
       <div 
         ref={cursorRef}
         style={{ left: 0, top: 0 }}
@@ -212,8 +212,21 @@ export default function Home() {
           sorting,
           isDarkMode,
           toggleTheme,
+          selectedAlgorithm,
+          setSelectedAlgorithm,
         } as any)}
       />
+
+      {/* Sincronización del Algoritmo Activo */}
+      <div className="w-full max-w-6xl mx-auto px-6 py-3.5 bg-[var(--card)] border border-orange-500/30 rounded-xl flex flex-col sm:flex-row justify-between items-center gap-2 shadow-lg backdrop-blur-md transition-colors duration-300">
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse" />
+          <span className="text-xs uppercase tracking-widest text-[var(--mute)] font-mono">Algoritmo Activo en Simulador:</span>
+        </div>
+        <span className="text-orange-500 font-bold tracking-wide text-sm bg-orange-500/10 px-4 py-1 rounded-lg border border-orange-500/20">
+          {selectedAlgorithm}
+        </span>
+      </div>
 
       <div className="w-full max-w-6xl mx-auto flex flex-col gap-5">
         
