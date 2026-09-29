@@ -43,7 +43,7 @@ export default function Header({
               <b className="flex-1 bg-orange-500 rounded-[1px]" style={{height:'65%'}}></b>
             </i>
           </div>
-          <p className="text-[10px] text-[var(--mute)] uppercase tracking-widest font-mono mt-0.5 hidden sm:block">Control & Telemetry HUD</p>
+          <p className="text-[10px] text-[var(--mute)] uppercase tracking-widest font-mono mt-0.5 hidden sm:block">Visualizador de Algoritmos</p>
         </div>
         
         <div className="flex flex-wrap items-center gap-4">
