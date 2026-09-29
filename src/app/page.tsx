@@ -226,10 +226,14 @@ export default function Home() {
     return { comparisons: comps, swaps: swps };
   };
 
- const runBenchmark = async () => {
+const runBenchmark = async () => {
     if (sorting) return;
     setSorting(true);
     resetStates();
+
+    // Dataset grande e independiente para la prueba analítica (5,000 elementos)
+    const benchmarkSize = 5000;
+    const baseDataset = Array.from({ length: benchmarkSize }, () => Math.floor(Math.random() * 10000) + 1);
 
     const algorithmsList = [
       { name: "Bubble Sort", run: (arr: number[]) => simulateBubbleSort(arr, false) },
@@ -243,8 +247,8 @@ export default function Home() {
     const results = [];
 
     for (const algo of algorithmsList) {
-      //  Creamos un arreglo fresco idéntico al actual para cada iteración
-      const freshDataset = [...array];
+      // Duplicamos el dataset base para que todos ordenen exactamente los mismos números
+      const freshDataset = [...baseDataset];
       
       const start = performance.now();
       const metrics = algo.run(freshDataset);
@@ -252,7 +256,7 @@ export default function Home() {
       
       results.push({
         algorithm: algo.name,
-        time: Number((end - start).toFixed(3)),
+        time: Number((end - start).toFixed(2)),
         comparisons: metrics.comparisons,
         swaps: metrics.swaps,
       });
