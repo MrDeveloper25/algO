@@ -10,6 +10,8 @@ interface HeaderProps {
   animationSpeed: number;
   setAnimationSpeed: (speed: number) => void;
   sorting: boolean;
+  selectedAlgorithm: string;
+  setSelectedAlgorithm: (algo: string) => void;
 }
 
 export default function Header({ 
@@ -21,13 +23,13 @@ export default function Header({
   setArraySize, 
   animationSpeed, 
   setAnimationSpeed, 
-  sorting 
+  sorting,
+  selectedAlgorithm,
+  setSelectedAlgorithm
 }: HeaderProps) {
   
-  // Estado local para permitir escritura libre sin perder el foco
   const [localSize, setLocalSize] = useState<string>(String(arraySize));
 
-  // Sincroniza si el arraySize cambia desde fuera
   useEffect(() => {
     setLocalSize(String(arraySize));
   }, [arraySize]);
@@ -35,7 +37,6 @@ export default function Header({
   return (
     <header className="header-hud p-5 rounded-2xl max-w-6xl mx-auto w-full border-b border-[var(--line,#252A3A)] bg-[var(--card,#161927)]">
       <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
-        {/* Logotipo actualizado con la "O" métrica interactiva */}
         <div className="flex items-center gap-3">
           <div className="font-extrabold text-2xl tracking-tight flex items-center gap-0.5 text-slate-100">
             alg
@@ -50,17 +51,19 @@ export default function Header({
         
         <div className="flex flex-wrap items-center gap-3">
           <select 
+            value={selectedAlgorithm}
+            onChange={(e) => setSelectedAlgorithm(e.target.value)}
             disabled={sorting}
-            className="px-3 py-2 text-sm font-medium rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface-alt)] disabled:opacity-50 text-slate-200"
+            className="px-3 py-2 text-sm font-medium rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface-alt)] disabled:opacity-50 text-slate-200 cursor-pointer"
           >
-            <option value="bubble">Bubble Sort</option>
-            <option value="optimizedBubble">Optimized Bubble Sort</option>
-            <option value="selection">Selection Sort</option>
-            <option value="insertion">Insertion Sort</option>
-            <option value="gnome">Gnome Sort</option>
-            <option value="exchange">Exchange Sort</option>
-            <option value="quick">Quick Sort</option>
-            <option value="merge">Merge Sort</option>
+            <option value="Bubble Sort">Bubble Sort</option>
+            <option value="Optimized Bubble Sort">Optimized Bubble Sort</option>
+            <option value="Selection Sort">Selection Sort</option>
+            <option value="Insertion Sort">Insertion Sort</option>
+            <option value="Gnome Sort">Gnome Sort</option>
+            <option value="Exchange Sort">Exchange Sort</option>
+            <option value="Quick Sort">Quick Sort</option>
+            <option value="Merge Sort">Merge Sort</option>
           </select>
 
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface-alt)]">
