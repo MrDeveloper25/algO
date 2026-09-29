@@ -33,16 +33,30 @@ export default function Header({
   return (
     <header className="header-hud p-5 rounded-2xl max-w-6xl mx-auto w-full border-b border-[var(--line)] bg-[var(--card)] transition-colors duration-300">
       <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
-        {/* Logotipo */}
+        
+        {/* LOGOTIPO ENLAZADO A saidgonzalez.com */}
         <div className="flex items-center gap-3">
-          <div className="font-extrabold text-2xl tracking-tight flex items-center gap-0.5 text-[var(--ink)]">
-            alg
-            <i aria-hidden="true" className="inline-flex items-end gap-0.5 w-[26px] h-[26px] border-[3px] border-orange-500 rounded-full p-[0_4px_3px] overflow-hidden not-italic">
-              <b className="flex-1 bg-orange-500 rounded-[1px]" style={{height:'40%'}}></b>
-              <b className="flex-1 bg-orange-500 rounded-[1px]" style={{height:'100%'}}></b>
-              <b className="flex-1 bg-orange-500 rounded-[1px]" style={{height:'65%'}}></b>
-            </i>
-          </div>
+          <a 
+            href="https://saidgonzalez.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-2.5 group cursor-pointer"
+            title="Ir a saidgonzalez.com"
+          >
+            <img 
+              src="/icon.png" 
+              alt="Said González Logo" 
+              className="w-7 h-7 object-contain transition-transform group-hover:scale-105"
+            />
+            <div className="font-extrabold text-2xl tracking-tight flex items-center gap-0.5 text-[var(--ink)]">
+              alg
+              <i aria-hidden="true" className="inline-flex items-end gap-0.5 w-[26px] h-[26px] border-[3px] border-orange-500 rounded-full p-[0_4px_3px] overflow-hidden not-italic">
+                <b className="flex-1 bg-orange-500 rounded-[1px]" style={{height:'40%'}}></b>
+                <b className="flex-1 bg-orange-500 rounded-[1px]" style={{height:'100%'}}></b>
+                <b className="flex-1 bg-orange-500 rounded-[1px]" style={{height:'65%'}}></b>
+              </i>
+            </div>
+          </a>
           <p className="text-[10px] text-[var(--mute)] uppercase tracking-widest font-mono mt-0.5 hidden sm:block">Visualizador de Algoritmos</p>
         </div>
         
